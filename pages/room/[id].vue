@@ -17,40 +17,50 @@ const { data: roomObject } = await useFetch(`/rooms/${id}`, {
   },
 });
 
-// 使用 useSeoMeta  將 roomObject 的資訊寫入 SEO Meta
-/* 請撰寫 useSeoMeta({ }) 渲染出下方的 HTML 結構，並將 {{ }}  改成使用 roomObject 物件的資料。
-<title> Freyja | {{ 房型名稱 }}</title>
-<meta name="description" content="{{ 房型描述 }}">
-<meta property="og:title" content="Freyja | {{ 房型名稱 }} ">
-<meta property="og:description" content="{{ 房型描述 }}">
-<meta property="og:image" content="{{房型主圖}}">
-<meta property="og:url" content="https://freyja.travel.com.tw/room/{房型 id }">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Freyja | {{ 房型名稱 }}">
-<meta name="twitter:description" content="{{ 房型描述 }}">
-<meta name="twitter:image" content="{{房型主圖}}">
+/* 
+請將 useSeoMeta({ }) 改成 Nuxt3 SEO 元件的寫法
+重複邏輯的地方可以使用 computed 
+
+useSeoMeta({
+  title: roomObject.value.name,
+  titleTemplate: (title) => `Freyja | ${title}`,
+  description: () => `${roomObject.value.description}`,
+  ogTitle: () => `Freyja | ${roomObject.value.name}`,
+  ogDescription: () => `${roomObject.value.description}`,
+  ogImage: () => `${roomObject.value.imageUrl}`,
+  ogUrl: () => `https://freyja.travel.com.tw/room/${roomObject.value._id}`,
+  twitterCard: "summary_large_image",
+  twitterTitle: () => `Freyja | ${roomObject.value.name}`,
+  twitterDescription: () => `${roomObject.value.description}`,
+  twitterImage: () => `${roomObject.value.imageUrl}`,
+});
 */
 
-useSeoMeta({ 
-  title:roomObject.value.name,
-  titleTemplate: (title) => `Freyja | ${title}`,
-  description:() =>`${roomObject.value.description}`,
-  ogTitle:() =>`Freyja | ${roomObject.value.name}`,
-  ogDescription:() =>`${roomObject.value.description}`,
-  ogImage:() =>`${roomObject.value.imageUrl}`,
-  ogUrl:() =>`https://freyja.travel.com.tw/room/${roomObject.value._id}`,
-  twitterCard:"summary_large_image",
-  twitterTitle:() =>`Freyja | ${roomObject.value.name}`,
-  twitterDescription:() =>`${roomObject.value.description}`,
-  twitterImage:() =>`${roomObject.value.imageUrl}`,
-})
-
+const pageTitle = ref("Freyja");
+const titleTemplate = computed(
+  () => `${pageTitle.value} | ${roomObject.value.name}`
+);
+const mainPictureUrl = computed(
+  () => `https://freyja.travel.com.tw/room/${roomObject.value._id}`
+);
 const isProvide = function (isProvideBoolean = false) {
   return isProvideBoolean ? "提供" : "未提供";
 };
 </script>
 
 <template>
+  <Head>
+    <Title>{{ titleTemplate }}</Title>
+    <Meta name="description" :content="roomObject.description" />
+    <Meta property="og:title" :content="titleTemplate" />
+    <Meta property="og:description" :content="roomObject.description" />
+    <Meta property="og:image" :content="roomObject.imageUrl" />
+    <Meta property="og:url" :content="mainPictureUrl" />
+    <Meta name="twitter:card" content="summary_large_image" />
+    <Meta name="twitter:title" :content="titleTemplate" />
+    <Meta name="twitter:description" :content="roomObject.description" />
+    <Meta name="twitter:image" :content="roomObject.imageUrl" />
+  </Head>
   <h2>房型詳細頁面</h2>
   <div class="container">
     <button @click="router.go(-1)">回上一頁</button>
