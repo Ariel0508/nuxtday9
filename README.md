@@ -1,30 +1,23 @@
-# Day 9 - $fetch 與 ofetch 題目
+# Day 12 - useSeoMeta 與 useServerSeoMeta 題目
 
-![題目示意圖](image.png)
+請 clone 這一份模板，在 `/pages/room/[id].vue` 房型詳細頁面作答，完成以下條件 :
 
-請 clone 這一份模板，實作帳號註冊功能 :
+- 在取得房型詳細資料的 `roomObject` 物件後，使用 `useSeoMeta` 將 `roomObject` 的資訊寫入 SEO Meta 。
+- 伺服器端提交給搜尋引擎爬蟲以及客戶端渲染的 SEO Meta 皆使用使用下方結構的標籤。請撰寫 useSeoMeta({ }) 渲染出下方的 HTML 結構，並將 `{{ }}` 替換成使用 roomObject 物件的資料。
 
-- 在 `/pages/register.vue` 使用模板提供的操作介面填寫註冊表單。點擊 “註冊” 按鈕後使用 Nuxt3 提供的方法串接旅館的 [註冊 API](https://todolist-api.hexschool.io/doc/#/%E4%BD%BF%E7%94%A8%E8%80%85/post_users_sign_up) ，將請求送出。
-- 需使用 try catch 處理請求成功與失敗的訊息，請求成功與失敗皆使用 [sweetAlert2 套件](https://sweetalert2.github.io/)顯示訊息。sweetAlert2 套件在模板已有安裝與引入，不需再額外設定。
-
-```jsx
-$swal.fire({
-  position: "center",
-  icon: ... ,
-  title: ... ,
-  showConfirmButton: false,
-  timer: 1500,
-});
 ```
 
-- 表單不需處理表單驗證、身分驗證、檢查登入狀態以及存入 cookie。
-- [註冊 API](https://todolist-api.hexschool.io/doc/#/%E4%BD%BF%E7%94%A8%E8%80%85/post_users_sign_up) 夾帶的請求體（Request Body）格式，需要注意以下地方 :
-  - 所有欄位都必填。
-  - 密碼需要至少 8 碼以上，並英數混合。
-  - 電話格式可以是手機號碼與市內電話。
-  - birthday 格式可以是 "yyyy-mm-dd”。
-  - zipcode 需要對照到各縣市各區的郵遞區號，可以參考 [郵遞區號速查一覽表](https://c2e.ezbox.idv.tw/zipcode.php)。
-- 串接 API 時需避免在伺服器端與客戶端重複發送請求。
+<title> Freyja | {{ 房型名稱 }}</title>
+<meta name="description" content="{{ 房型描述 }}">
+<meta property="og:title" content="Freyja | {{ 房型名稱 }} ">
+<meta property="og:description" content="{{ 房型描述 }}">
+<meta property="og:image" content="{{房型主圖}}">
+<meta property="og:url" content="https://freyja.travel.com.tw/room/{房型 id }">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Freyja | {{ 房型名稱 }}">
+<meta name="twitter:description" content="{{ 房型描述 }}">
+<meta name="twitter:image" content="{{房型主圖}}">
+```
 
 ## 安裝
 
@@ -35,13 +28,13 @@ Node.js 版本建議為：`18.0.0` 以上
 ### 取得專案
 
 ```bash
-git clone -b day9-nuxt3-fetch  https://github.com/jasonlu0525/nuxt3-live-question.git day9-nuxt3-fetch-question
+git clone -b day12-useseometa-seo  https://github.com/jasonlu0525/nuxt3-live-question.git day12-useseometa-seo-question
 ```
 
 ### 移動到專案內
 
 ```bash
-cd  day9-nuxt3-fetch-question
+cd  day12-useseometa-seo-question
 ```
 
 ### 安裝套件
